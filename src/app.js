@@ -6,6 +6,8 @@ const express = require('express');
 // call the express function
 const app = express();
 
+const {accounts, users, writeJSON} = require('./data')
+
 // Configure the View Directory and Engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs')
@@ -18,16 +20,16 @@ app.use(express.urlencoded({extended:true}))
 // app.use()
 
 // use the readFileSync function to read the contents of the file located at src/json/accounts.json with the UTF8 encoding.
-const accountData = fs.readFileSync(
-    path.join(__dirname, 'json', 'accounts.json'), 'utf8'
-)
+// const accountData = fs.readFileSync(
+//     path.join(__dirname, 'json', 'accounts.json'), 'utf8'
+// )
 // accountData now contains JSON, use JSON.parse to convert it to a javascript object.
-const accounts = JSON.parse(accountData)
+// const accounts = JSON.parse(accountData)
 
-const userData = fs.readFileSync(
-    path.join(__dirname, 'json', 'users.json'), 'utf8'
-)
-const users = JSON.parse(userData)
+// const userData = fs.readFileSync(
+//     path.join(__dirname, 'json', 'users.json'), 'utf8'
+// )
+// const users = JSON.parse(userData)
 
 // create a get route that points at the root URL path '/' and render the index view and an objects key-value pairs.
 app.get('/',(req,res)=>{
@@ -88,8 +90,9 @@ app.get('/transfer',(req,res)=>{
 app.post('/transfer',(req,res)=>{
     accounts[req.body.from].balance = accounts[req.body.from].balance - req.body.amount;
     accounts[req.body.to].balance = parseInt(accounts[req.body.to].balance) + parseInt(req.body.amount,10);
-    const accountsJSON = JSON.stringify(accounts, null, 4);
-    fs.writeFileSync(path.join(__dirname, 'json/accounts.json'), accountsJSON, 'utf8');
+    // const accountsJSON = JSON.stringify(accounts, null, 4);
+    // fs.writeFileSync(path.join(__dirname, 'json/accounts.json'), accountsJSON, 'utf8');
+    writeJSON();
     res.render(
         'transfer',
         {message:'Transfer Completed'}
@@ -107,8 +110,9 @@ app.get('/payment',(req,res)=>{
 app.post('/payment',(req,res)=>{
     accounts.credit.balance -= req.body.amount;
     accounts.credit.available += parseInt(req.body.amount,10);
-    const accountsJSON = JSON.stringify(accounts, null, 4);
-    fs.writeFileSync(path.join(__dirname, 'json', 'accounts.json'), accountsJSON, 'utf8');
+    // const accountsJSON = JSON.stringify(accounts, null, 4);
+    // fs.writeFileSync(path.join(__dirname, 'json', 'accounts.json'), accountsJSON, 'utf8');
+    writeJSON();
     res.render(
         'payment',
         {message:'Payment Successful', account:accounts.credit}

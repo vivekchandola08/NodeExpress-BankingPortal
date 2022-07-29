@@ -68,7 +68,7 @@ app.get('/profile',(req,res)=>{
 // create a get route that points to the /transfer URL path. It should render the transfer view.
 app.get('/transfer',(req,res)=>{
     res.render(
-        'tranfer'
+        'transfer'
     )
 })
 
@@ -91,7 +91,7 @@ app.post('/transfer',(req,res)=>{
     const accountsJSON = JSON.stringify(accounts, null, 4);
     fs.writeFileSync(path.join(__dirname, 'json/accounts.json'), accountsJSON, 'utf8');
     res.render(
-        'tranfer',
+        'transfer',
         {message:'Transfer Completed'}
     )
 })

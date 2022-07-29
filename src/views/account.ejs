@@ -1,5 +1,6 @@
 <%- include('header'); %>
 
+<!-- Show Account Transactions -->
 <%- include('transactions', {account:account}) %>
 
   <% if (account.unique_name == 'credit' && account.balance > 0) { %>
